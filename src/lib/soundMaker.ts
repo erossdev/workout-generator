@@ -17,7 +17,7 @@ if (browser) {
 		oscillator.start(context.currentTime);
 		oscillator.stop(context.currentTime + 200 * 0.001);
 	};
-	heighBeep = function () {
+	highBeep = function () {
 		const oscillator = context.createOscillator();
 		const gain = context.createGain();
 		oscillator.connect(gain);
