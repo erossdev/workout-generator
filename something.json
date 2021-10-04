@@ -1,0 +1,47 @@
+{
+	"time": 1800,
+	"exercises": [
+		[
+			{ "time": 60, "exercise": { "name": "Leg Raises", "details": { "bodyParts": ["abs"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "Sit Ups", "details": { "bodyParts": ["abs"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "Sumo Squats", "details": { "bodyParts": ["legs"], "aerobic": true } } },
+			{ "time": 60, "exercise": { "name": "Leg Raises", "details": { "bodyParts": ["abs"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "Rest" } }
+		],
+		[
+			{ "time": 60, "exercise": { "name": "Jump Rope", "details": { "bodyParts": ["full"], "aerobic": true } } },
+			{ "time": 60, "exercise": { "name": "Side Lunges", "details": { "bodyParts": ["legs"], "aerobic": true } } },
+			{ "time": 60, "exercise": { "name": "Flutter Kicks", "details": { "bodyParts": ["abs"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "Walking Lunges", "details": { "bodyParts": ["legs"], "aerobic": true } } },
+			{ "time": 60, "exercise": { "name": "Rest" } }
+		],
+		[
+			{ "time": 60, "exercise": { "name": "Push Ups", "details": { "bodyParts": ["chest"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "Side to Side Wide Grip Pull Ups", "details": { "bodyParts": ["back"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "Crunches", "details": { "bodyParts": ["abs"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "Leg Raises", "details": { "bodyParts": ["abs"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "Rest" } }
+		],
+		[
+			{ "time": 60, "exercise": { "name": "Windshield Wipers", "details": { "bodyParts": ["abs"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "Incline Push Ups", "details": { "bodyParts": ["chest"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "Pull Ups", "details": { "bodyParts": ["back"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "In And Outs", "details": { "bodyParts": ["full"], "aerobic": true } } },
+			{ "time": 60, "exercise": { "name": "Rest" } }
+		],
+		[
+			{ "time": 60, "exercise": { "name": "Jumping Jacks", "details": { "bodyParts": ["full"], "aerobic": true } } },
+			{ "time": 60, "exercise": { "name": "Handstand Hold", "details": { "bodyParts": ["shoulders"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "Deadmill Runs", "details": { "bodyParts": ["legs"], "aerobic": true } } },
+			{ "time": 60, "exercise": { "name": "Decline Push Ups", "details": { "bodyParts": ["chest"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "Rest" } }
+		],
+		[
+			{ "time": 60, "exercise": { "name": "Hanging Knee Side Raises", "details": { "bodyParts": ["abs"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "Side to Side Wide Grip Pull Ups", "details": { "bodyParts": ["back"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "Jumping Jacks", "details": { "bodyParts": ["full"], "aerobic": true } } },
+			{ "time": 60, "exercise": { "name": "Sit Ups", "details": { "bodyParts": ["abs"], "aerobic": false } } },
+			{ "time": 60, "exercise": { "name": "Neutral Grip Pull Ups", "details": { "bodyParts": ["back"], "aerobic": false } } }
+		]
+	]
+}
