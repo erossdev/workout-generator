@@ -1,6 +1,6 @@
 {
 	"short_name": "gwg",
-	"name": "garage-workout-generator",
+	"name": "Workout Generator",
 	"start_url": "/",
 	"icons": [
 		{
@@ -14,20 +14,6 @@
 	"scope": "/",
 	"theme_color": "#3367D6",
 	"shortcuts": [
-		{
-			"name": "How's weather today?",
-			"short_name": "Today",
-			"description": "View weather information for today",
-			"url": "/today?source=pwa",
-			"icons": [{ "src": "/icons/logo_192.png", "sizes": "192x192" }]
-		},
-		{
-			"name": "How's weather tomorrow?",
-			"short_name": "Tomorrow",
-			"description": "View weather information for tomorrow",
-			"url": "/tomorrow?source=pwa",
-			"icons": [{ "src": "/icons/logo_192.png", "sizes": "192x192" }]
-		}
 	],
-	"description": "Lofi to lofi beats, while using the scratchpad to list down tasks and thoughts"
+	"description": "It generates workouts."
 }
