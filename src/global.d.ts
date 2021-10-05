@@ -41,6 +41,7 @@ type WorkoutExercise = {
 }
 
 type Workout = {
+  status: string;
   time: number;
   exercises: [
     WorkoutExercise[]?

@@ -2,6 +2,12 @@ import { rando } from './rando';
 import exercises from './exercises';
 import type { Exercise, Workout, WorkoutExercise, WorkoutGeneratorOptions } from 'src/global';
 
+export const WorkoutStatus = {
+	NotStarted: 'NOT_STARTED',
+	InProgress: 'IN_PROGRESS',
+	Paused: 'PAUSED',
+};
+
 function getRandomExercise(): Exercise {
 	const keys = Object.keys(exercises);
 	const randomNum = rando(keys.length - 1);
@@ -55,6 +61,7 @@ export default async function ({
 	restLength,
 }: WorkoutGeneratorOptions): Promise<Workout> {
 	const workout: Workout = {
+		status: WorkoutStatus.NotStarted,
 		time: workoutLength * 60,
 		exercises: [],
 	};

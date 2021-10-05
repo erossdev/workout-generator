@@ -2,24 +2,20 @@
 	import { browser } from '$app/env';
 	import type { Workout, WorkoutExercise } from 'src/global';
 	import { beep, highBeep } from '$lib/soundMaker';
-
-	const WorkoutStatus = {
-		NotStarted: 'NOT_STARTED',
-		InProgress: 'IN_PROGRESS',
-		Paused: 'PAUSED',
-	};
+	import { WorkoutStatus } from '$lib/workoutGenerator';
 
 	let hasWakeLock = false;
 	let workoutStatus = WorkoutStatus.NotStarted;
 	let workout = null;
 	let generatedWorkout: Workout = null;
-	let currentTick, currentExerciseName, nextExerciseName;
+	let currentTick = 10, currentExerciseName, nextExerciseName;
 
 	if (browser) {
 		const savedWorkout = localStorage.getItem('workout');
 		if (savedWorkout) {
 			generatedWorkout = JSON.parse(savedWorkout);
 			workout = {
+				status: generatedWorkout.status,
 				time: generatedWorkout.time,
 				exercises: generatedWorkout.exercises.flat(),
 			};
@@ -88,12 +84,15 @@
 	}
 
 	getWakeLock();
+	startWorkout();
 </script>
 
-<div class="flex-1 flex flex-col">
-	<div class="flex-1 flex flex-col items-center justify-center">
-		<div class="text-4xl text-center">{currentExerciseName}</div>
-		<div class="text-9xl text-center">{currentTick}</div>
+{#if workoutStatus === WorkoutStatus.InProgress}
+	<div class="flex-1 flex flex-col">
+		<div class="flex-1 flex flex-col items-center justify-center">
+			<div class="text-5xl text-blue-700 text-center">{currentExerciseName}</div>
+			<div class="text-9xl text-center">{currentTick}</div>
+		</div>
+		<div class="text-center text-xl pb-5">Up Next: {nextExerciseName}</div>
 	</div>
-	<div class="text-center">Up Next: {nextExerciseName}</div>
-</div>
+{/if}
