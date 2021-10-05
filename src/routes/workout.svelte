@@ -75,8 +75,8 @@
 		workoutStatus = WorkoutStatus.InProgress;
 		nextExerciseName = workout.exercises[0].exercise.name;
 		await runExercises({ time: 10, exercise: { name: 'Get Ready...', details: { aerobic: false, bodyParts: [] } } });
-		for (let i = 1; i < workout.exercises.length; i++) {
-			if (i < workout.exercises.length - 1) {
+		for (let i = 0; i < workout.exercises.length; i++) {
+			if (i < workout.exercises.length) {
 				nextExerciseName = workout.exercises[i + 1].exercise.name;
 			}
 			await runExercises(workout.exercises[i]);
