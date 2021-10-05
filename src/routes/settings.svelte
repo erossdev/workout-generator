@@ -39,7 +39,7 @@ import { goto } from '$app/navigation';
 </script>
 
 <div class="flex-1 flex flex-col p-5">
-	<div class="grid grid-cols-2 py-2" style="height: 200px">
+	<div class="grid grid-cols-2 py-2">
 		<div>Equipment to Use</div>
 		<div class="w-full">
 			<select class="w-full h-full" multiple bind:value={settings.equipment}>

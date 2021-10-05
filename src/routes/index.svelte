@@ -3,6 +3,12 @@
 	import type { Workout } from 'src/global';
 	import { goto } from '$app/navigation';
 
+	async function requestForNotifications() {
+		Notification.requestPermission().catch((err) => {
+			alert('You must allow notifications for us to be friends...');
+		});
+	}
+
 	let generatedWorkout: Workout = null;
 	if (browser) {
 		const savedWorkout = localStorage.getItem('workout');
@@ -14,6 +20,8 @@
 	function goToSettings() {
 		goto('/settings');
 	}
+
+	requestForNotifications();
 </script>
 
 <svelte:head>

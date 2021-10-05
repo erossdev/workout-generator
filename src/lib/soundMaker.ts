@@ -1,12 +1,15 @@
 import { browser } from '$app/env';
 
-let beep, highBeep;
+let beep, highBeep, resume, speak;
 
 if (browser) {
-	const AudioContext = window.AudioContext;
+	// @ts-ignore
+	const AudioContext = window.AudioContext || window.webkitAudioContext;
 	const context = new AudioContext();
+	const utterance = new SpeechSynthesisUtterance();
 
 	beep = function () {
+		context.resume();
 		const oscillator = context.createOscillator();
 		const gain = context.createGain();
 		oscillator.connect(gain);
@@ -18,6 +21,7 @@ if (browser) {
 		oscillator.stop(context.currentTime + 200 * 0.001);
 	};
 	highBeep = function () {
+		context.resume();
 		const oscillator = context.createOscillator();
 		const gain = context.createGain();
 		oscillator.connect(gain);
@@ -28,9 +32,16 @@ if (browser) {
 		oscillator.start(context.currentTime);
 		oscillator.stop(context.currentTime + 200 * 0.001);
 	};
+	speak = function (textToSay) {
+		window.speechSynthesis.resume();
+		utterance.text = textToSay;
+		window.speechSynthesis.speak(utterance);
+	};
 } else {
 	beep = () => {};
 	highBeep = () => {};
+	resume = () => {};
+	speak = () => {};
 }
 
-export { beep, highBeep };
+export default { beep, highBeep, resume, speak };
