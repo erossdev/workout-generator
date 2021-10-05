@@ -1,5 +1,7 @@
 /// <reference types="@sveltejs/kit" />
 
+import Equipment from '$lib/equipment';
+
 interface BaseWebLockSentinelEventMap {
   "onrelease": Event;
 }
@@ -16,7 +18,7 @@ type WakeLockSentinel {
 
 type WakeLockRequestType = "screen"
 
-interface Navigator {
+export interface Navigator {
   wakeLock: {
     request: (type: WakeLockRequestType) => Promise
   }
@@ -25,11 +27,12 @@ interface Navigator {
 type ExerciseDetails = {
   bodyParts: string[];
   aerobic: true | false;
+  equipment?: string[];
 }
 
 type Exercise = {
   name: string;
-  details: ExerciseDetails;
+  details?: ExerciseDetails;
 }
 
 type WorkoutExercise = {
@@ -40,6 +43,15 @@ type WorkoutExercise = {
 type Workout = {
   time: number;
   exercises: [
-    [WorkoutExercise]
+    WorkoutExercise[]?
   ]
+}
+
+export interface WorkoutGeneratorOptions {
+  equipment: string[];
+	numberOfCircuits: number;
+	numberOfExercisesInCircuit: number;
+	workoutLength: number;
+	exerciseLength: number;
+	restLength: number;
 }
