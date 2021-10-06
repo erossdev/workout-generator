@@ -60,7 +60,7 @@
 							soundMaker.highBeep();
 						} else {
 							if (timeLength === 5) {
-								speakExercise(`up next ${trailingExercises[0].name}`);
+								speakExercise(`up next is ${trailingExercises[0].name}`);
 							}
 							soundMaker.beep();
 						}
@@ -118,30 +118,24 @@
 		}
 	}
 
-	function pauseOrResumeWorkout() {
-		if (workout.status === WorkoutStatus.Paused || WorkoutStatus.InProgress) {
-			switch (workout.status) {
-				case WorkoutStatus.Paused:
-					generatedWorkout.status = WorkoutStatus.InProgress;
-				case WorkoutStatus.InProgress:
-					generatedWorkout.status = WorkoutStatus.Paused;
-			}
-		}
+	function pauseWorkout() {
+		workout.status = WorkoutStatus.Paused;
+		workout = workout;
+	}
+
+	function resumeWorkout() {
+		workout.status = WorkoutStatus.InProgress;
+		workout = workout;
 	}
 
 	getWakeLock();
 	startWorkout();
-
-	setTimeout(() => {
-		console.log(contextDiv);
-		if (browser) {
-			document.getElementById('contextDiv').click();
-		}
-	}, 1000);
 </script>
 
-<div id="contextDiv"><!-- Empty div to make sure we have audio context --></div>
 {#if workout && workout.status === WorkoutStatus.InProgress}
+	<div class="flex items-end justify-end">
+		<button class="p-3" on:click={pauseWorkout}>Pause</button>
+	</div>
 	<div class="flex-1 flex flex-col">
 		<div class="flex-1 flex flex-col items-center justify-center">
 			<div class="text-9xl text-center">{currentTick}</div>
@@ -161,6 +155,12 @@
 				{trailingExercise.name}
 			</div>
 		{/each}
+	</div>
+{/if}
+{#if workout && workout.status === WorkoutStatus.Paused}
+	<div class="flex-1 flex flex-col items-center justify-center">
+		<div class="text-3xl text-center">Workout Paused</div>
+		<button class="mt-5 p-3 text-xl text-center border border-blue-700 hover:bg-blue-300 active:bg-blue-500" on:click={resumeWorkout}>Click to Resume</button>
 	</div>
 {/if}
 
