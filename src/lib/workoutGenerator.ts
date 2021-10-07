@@ -6,6 +6,7 @@ export const WorkoutStatus = {
 	NotStarted: 'NOT_STARTED',
 	InProgress: 'IN_PROGRESS',
 	Paused: 'PAUSED',
+	Complete: 'COMPLETE',
 };
 
 function getRandomExercise(): Exercise {

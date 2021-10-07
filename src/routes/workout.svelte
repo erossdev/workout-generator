@@ -3,6 +3,7 @@
 	import type { Workout, WorkoutExercise } from 'src/global';
 	import soundMaker from '$lib/soundMaker';
 	import { WorkoutStatus } from '$lib/workoutGenerator';
+	import { goto } from '$app/navigation';
 
 	interface FlattenedWorkout {
 		status: string;
@@ -106,6 +107,9 @@
 			buildupcomingExercises(i);
 			await runExercises(workout.exercises[i]);
 		}
+
+		workout.status = WorkoutStatus.Complete;
+		workout = workout;
 	}
 
 	function pauseWorkout() {
@@ -118,42 +122,55 @@
 		workout = workout;
 	}
 
+	function completeWorkout() {
+		localStorage.removeItem('workout');
+		goto('/');
+	}
+
 	getWakeLock();
 	startWorkout();
 </script>
 
-{#if workout && workout.status === WorkoutStatus.InProgress}
-	<div class="flex items-end justify-end">
-		<button class="p-3" on:click={pauseWorkout}>Pause</button>
-	</div>
-	<div class="flex-1 flex flex-col">
-		<div class="flex-1 flex flex-col items-center justify-center">
-			<div class="text-9xl text-center">{currentTick}</div>
-			<div class="text-4xl text-blue-700 text-center">{currentExerciseName}</div>
+{#if workout}
+	{#if workout.status === WorkoutStatus.InProgress}
+		<div class="flex items-end justify-end">
+			<button class="p-3" on:click={pauseWorkout}>Pause</button>
 		</div>
-	</div>
-	<div class="flex flex-col justify-center items-center">
-		{#each upcomingExercises as trailingExercise, index}
-			<div
-				class:text-3xl={index === 0}
-				class:text-xl={index === 1}
-				class:text-lg={index === 2}
-				class:text-md={index === 3}
-				class:text-sm={index === 4}
-				class={trailingExercise.clazzes}
-			>
-				{trailingExercise.name}
+		<div class="flex-1 flex flex-col">
+			<div class="flex-1 flex flex-col items-center justify-center">
+				<div class="text-9xl text-center">{currentTick}</div>
+				<div class="text-4xl text-blue-700 text-center">{currentExerciseName}</div>
 			</div>
-		{/each}
-	</div>
-{/if}
-{#if workout && workout.status === WorkoutStatus.Paused}
-	<div class="flex-1 flex flex-col items-center justify-center">
-		<div class="text-3xl text-center">Workout Paused</div>
-		<button class="mt-5 p-3 text-xl text-center border border-blue-700 hover:bg-blue-300 active:bg-blue-500" on:click={resumeWorkout}
-			>Click to Resume</button
+		</div>
+		<div class="flex flex-col justify-center items-center">
+			{#each upcomingExercises as trailingExercise, index}
+				<div
+					class:text-3xl={index === 0}
+					class:text-xl={index === 1}
+					class:text-lg={index === 2}
+					class:text-md={index === 3}
+					class:text-sm={index === 4}
+					class={trailingExercise.clazzes}
+				>
+					{trailingExercise.name}
+				</div>
+			{/each}
+		</div>
+	{/if}
+	{#if workout.status === WorkoutStatus.Paused}
+		<div class="flex-1 flex flex-col items-center justify-center">
+			<div class="text-3xl text-center">Workout Paused</div>
+			<button class="mt-5 p-3 text-xl text-center border border-blue-700 hover:bg-blue-300 active:bg-blue-500" on:click={resumeWorkout}
+				>Click to Resume</button
+			>
+		</div>
+	{/if}
+	{#if workout.status === WorkoutStatus.Complete}
+		<div class="text-5xl">YOU DID IT!</div>
+		<button class="border border-blue-700 p-3 text-blue-900 bg-blue-300 hover:bg-blue-500 active:bg-blue-600" on:click={completeWorkout}
+			>Go back home</button
 		>
-	</div>
+	{/if}
 {/if}
 
 <style>
