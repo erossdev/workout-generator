@@ -56,13 +56,14 @@ export default async function ({
 	equipment,
 	numberOfCircuits,
 	numberOfExercisesInCircuit,
-	workoutLength,
 	exerciseLength,
 	restLength,
 }: WorkoutGeneratorOptions): Promise<Workout> {
+	const restTime = restLength * (numberOfCircuits - 1),
+		workTime = numberOfCircuits * numberOfExercisesInCircuit * exerciseLength;
 	const workout: Workout = {
 		status: WorkoutStatus.NotStarted,
-		time: workoutLength * 60,
+		time: workTime + restTime,
 		exercises: [],
 	};
 

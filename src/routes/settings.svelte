@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/env';
-import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import equipment from '$lib/equipment';
 	import workoutGenerator from '$lib/workoutGenerator';
 
@@ -8,7 +8,6 @@ import { goto } from '$app/navigation';
 		equipment: ['All'],
 		numberOfCircuits: 6,
 		numberOfExercisesInCircuit: 4,
-		workoutLength: 30,
 		exerciseLength: 60,
 		restLength: 60,
 	};
@@ -60,18 +59,6 @@ import { goto } from '$app/navigation';
 				{#each [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as n}
 					<option value={n}>
 						{n} circuit{#if n !== 1}s{/if}
-					</option>
-				{/each}
-			</select>
-		</div>
-	</div>
-	<div class="grid grid-cols-2 py-2">
-		<div>Workout Length</div>
-		<div class="w-full">
-			<select class="w-full" bind:value={settings.workoutLength}>
-				{#each [15, 20, 25, 30, 35, 40, 45, 50, 55, 60] as l}
-					<option value={l}>
-						{l} minutes
 					</option>
 				{/each}
 			</select>

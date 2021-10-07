@@ -10,13 +10,12 @@
 		exercises: WorkoutExercise[];
 	}
 
-	let contextDiv;
 	let hasWakeLock = false;
 	let workout: FlattenedWorkout = null;
 	let generatedWorkout: Workout = null;
 	let currentTick = 10,
 		currentExerciseName,
-		trailingExercises: { clazzes: string; name: string }[] = [];
+		upcomingExercises: { clazzes: string; name: string }[] = [];
 
 	if (browser) {
 		const savedWorkout = localStorage.getItem('workout');
@@ -60,7 +59,7 @@
 							soundMaker.highBeep();
 						} else {
 							if (timeLength === 5) {
-								speakExercise(`up next is ${trailingExercises[0].name}`);
+								speakExercise(`up next is ${upcomingExercises[0].name}`);
 							}
 							soundMaker.beep();
 						}
@@ -75,45 +74,36 @@
 		});
 	}
 
-	// async function runCircuit(circuit: [WorkoutExercise]): Promise<void> {
-	// 	return new Promise(async (resolve, reject) => {
-	// 		for (let i = 0; i < circuit.length; i++) {
-	// 			await runExercises(circuit[i]);
-	// 		}
-	// 		resolve();
-	// 	});
-	// }
-
 	function speakExercise(textToSay: string) {
 		const utterance = new SpeechSynthesisUtterance(textToSay);
 		window.speechSynthesis.speak(utterance);
 	}
 
-	function buildTrailingExercises(currentIndex) {
-		trailingExercises.shift();
-		if (trailingExercises.length < 5) {
-			let i = currentIndex;
-			while (i < workout.exercises.length) {
-				trailingExercises.push({
-					clazzes: `tracking-wider text-opacity-${70 - trailingExercises.length * 10} text-blue-700`,
-					name: workout.exercises[i].exercise.name,
-				});
-				i++;
-				if (trailingExercises.length === 5) {
-					break;
-				}
-			}
-		}
-		trailingExercises = trailingExercises;
+	function buildupcomingExercises(currentIndex: number) {
+		upcomingExercises.shift(); // pop the next exercise
+		upcomingExercises.push({
+			clazzes: `tracking-wider text-opacity-${80 - upcomingExercises.length * 10} text-blue-700`,
+			name: workout.exercises[currentIndex + 5].exercise.name,
+		});
+		upcomingExercises = upcomingExercises;
 	}
 
 	async function startWorkout() {
 		workout.status = WorkoutStatus.InProgress;
-		buildTrailingExercises(0);
 		speakExercise('Get ready');
+
+		// initially populate upcoming exercises
+		while (upcomingExercises.length < 5) {
+			upcomingExercises.push({
+				clazzes: `tracking-wider text-opacity-${80 - upcomingExercises.length * 10} text-blue-700`,
+				name: workout.exercises[upcomingExercises.length].exercise.name,
+			});
+		}
+		upcomingExercises = upcomingExercises;
+
 		await runExercises({ time: 10, exercise: { name: 'Get Ready...', details: { aerobic: false, bodyParts: [] } } });
 		for (let i = 0; i < workout.exercises.length; i++) {
-			buildTrailingExercises(i);
+			buildupcomingExercises(i);
 			await runExercises(workout.exercises[i]);
 		}
 	}
@@ -143,7 +133,7 @@
 		</div>
 	</div>
 	<div class="flex flex-col justify-center items-center">
-		{#each trailingExercises as trailingExercise, index}
+		{#each upcomingExercises as trailingExercise, index}
 			<div
 				class:text-3xl={index === 0}
 				class:text-xl={index === 1}
@@ -160,11 +150,17 @@
 {#if workout && workout.status === WorkoutStatus.Paused}
 	<div class="flex-1 flex flex-col items-center justify-center">
 		<div class="text-3xl text-center">Workout Paused</div>
-		<button class="mt-5 p-3 text-xl text-center border border-blue-700 hover:bg-blue-300 active:bg-blue-500" on:click={resumeWorkout}>Click to Resume</button>
+		<button class="mt-5 p-3 text-xl text-center border border-blue-700 hover:bg-blue-300 active:bg-blue-500" on:click={resumeWorkout}
+			>Click to Resume</button
+		>
 	</div>
 {/if}
 
 <style>
+	.text-opacity-80 {
+		--tw-text-opacity: 0.8;
+	}
+
 	.text-opacity-70 {
 		--tw-text-opacity: 0.7;
 	}
@@ -179,9 +175,5 @@
 
 	.text-opacity-40 {
 		--tw-text-opacity: 0.4;
-	}
-
-	.text-opacity-30 {
-		--tw-text-opacity: 0.3;
 	}
 </style>
