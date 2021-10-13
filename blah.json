@@ -1,0 +1,27 @@
+{
+	"status": "NOT_STARTED",
+	"time": 280,
+	"exercises": [
+		[
+			{ "time": 20, "exercise": { "name": "Hang", "details": { "bodyParts": ["Back"], "aerobic": false, "equipment": ["Pull-Up Bar"] } } },
+			{ "time": 20, "exercise": { "name": "Push Ups", "details": { "bodyParts": ["Chest"], "aerobic": false } } },
+			{ "time": 20, "exercise": { "name": "Hanging Knee Raises", "details": { "bodyParts": ["Abs"], "aerobic": false, "equipment": ["Pull-Up Bar"] } } },
+			{ "time": 20, "exercise": { "name": "Plank", "details": { "bodyParts": ["Abs"], "aerobic": false } } },
+			{ "time": 20, "exercise": { "name": "Rest" } }
+		],
+		[
+			{ "time": 20, "exercise": { "name": "Hang", "details": { "bodyParts": ["Back"], "aerobic": false, "equipment": ["Pull-Up Bar"] } } },
+			{ "time": 20, "exercise": { "name": "Hamstring Hip Raise", "details": { "bodyParts": ["Legs"], "aerobic": false } } },
+			{ "time": 20, "exercise": { "name": "Broad Jumps", "details": { "bodyParts": ["Full Body"], "aerobic": true } } },
+			{ "time": 20, "exercise": { "name": "Mountain Climbers", "details": { "bodyParts": ["Abs"], "aerobic": false } } },
+			{ "time": 20, "exercise": { "name": "Rest" } }
+		],
+		[
+			{ "time": 20, "exercise": { "name": "Wall Sit", "details": { "bodyParts": ["Legs"], "aerobic": false } } },
+			{ "time": 20, "exercise": { "name": "Handstand Hold", "details": { "bodyParts": ["Shoulders"], "aerobic": false } } },
+			{ "time": 20, "exercise": { "name": "Plank Side Hold", "details": { "bodyParts": ["Abs"], "aerobic": false } } },
+			{ "time": 20, "exercise": { "name": "Low Plank to High Plank", "details": { "bodyParts": ["Chest", "Triceps"], "aerobic": false } } },
+			{ "time": 20, "exercise": { "name": "Jumping Jacks", "details": { "bodyParts": ["Full Body"], "aerobic": true } } }
+		]
+	]
+}

@@ -33,14 +33,16 @@
 	}
 
 	async function getWakeLock() {
-		// create an async function to request a wake lock
-		try {
-			// @ts-ignore
-			await navigator.wakeLock.request('screen');
-			hasWakeLock = true;
-		} catch (err) {
-			// The Wake Lock request has failed - usually system related, such as battery.
-			hasWakeLock = false;
+		if (!hasWakeLock) {
+			// create an async function to request a wake lock
+			try {
+				// @ts-ignore
+				await navigator.wakeLock.request('screen');
+				hasWakeLock = true;
+			} catch (err) {
+				// The Wake Lock request has failed - usually system related, such as battery.
+				hasWakeLock = false;
+			}
 		}
 	}
 
@@ -82,10 +84,12 @@
 
 	function buildupcomingExercises(currentIndex: number) {
 		upcomingExercises.shift(); // pop the next exercise
-		upcomingExercises.push({
-			clazzes: `tracking-wider text-opacity-${80 - upcomingExercises.length * 10} text-blue-700`,
-			name: workout.exercises[currentIndex + 5].exercise.name,
-		});
+		if (currentIndex + 5 < workout.exercises.length) {
+			upcomingExercises.push({
+				clazzes: `tracking-wider text-opacity-${80 - upcomingExercises.length * 10} text-blue-700`,
+				name: workout.exercises[currentIndex + 5].exercise.name,
+			});
+		}
 		upcomingExercises = upcomingExercises;
 	}
 
@@ -105,6 +109,7 @@
 		await runExercises({ time: 10, exercise: { name: 'Get Ready...', details: { aerobic: false, bodyParts: [] } } });
 		for (let i = 0; i < workout.exercises.length; i++) {
 			buildupcomingExercises(i);
+			console.log(`running exercise ${i}: ${workout.exercises[i].exercise.name}`);
 			await runExercises(workout.exercises[i]);
 		}
 

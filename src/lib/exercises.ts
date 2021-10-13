@@ -21,7 +21,7 @@ export default {
 	Dips: { bodyParts: [BodyParts.Chest, BodyParts.Triceps], aerobic: false, equipment: [Equipment.DipBars] },
 	'Low Plank to High Plank': { bodyParts: [BodyParts.Chest, BodyParts.Triceps], aerobic: false },
 	'Explosive Knee Push Ups': { bodyParts: [BodyParts.Chest], aerobic: false },
-	'Shoulder to Shoulder': { bodyParts: [BodyParts.Chest, BodyParts.Shoulders], aerobic: false },
+	'Shoulder Taps': { bodyParts: [BodyParts.Chest, BodyParts.Shoulders], aerobic: false },
 	'Diamond Push Ups': { bodyParts: [BodyParts.Chest, BodyParts.Triceps], aerobic: false },
 	'Spiderman Pushups': { bodyParts: [BodyParts.Chest], aerobic: false },
 	'Pull Ups': { bodyParts: [BodyParts.Back], aerobic: false, equipment: [Equipment.PullUpBar] },
