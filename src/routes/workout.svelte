@@ -46,6 +46,8 @@
 		}
 	}
 
+	$: getWakeLock();
+
 	function runExercises(circuitExercise: WorkoutExercise): Promise<void> {
 		let timeLength = circuitExercise.time,
 			interv;
