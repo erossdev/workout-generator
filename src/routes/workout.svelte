@@ -4,6 +4,7 @@
 	import soundMaker from '$lib/soundMaker';
 	import { WorkoutStatus } from '$lib/workoutGenerator';
 	import { goto } from '$app/navigation';
+	import exercises from '$lib/exercises';
 
 	interface FlattenedWorkout {
 		status: string;
@@ -16,6 +17,7 @@
 	let generatedWorkout: Workout = null;
 	let currentTick = 10,
 		currentExerciseName,
+		currentExerciseIndex = 0,
 		upcomingExercises: { clazzes: string; name: string }[] = [];
 
 	if (browser) {
@@ -86,10 +88,10 @@
 
 	function buildupcomingExercises(currentIndex: number) {
 		upcomingExercises.shift(); // pop the next exercise
-		if (currentIndex + 5 < workout.exercises.length) {
+		if (currentIndex + 1 < workout.exercises.length) {
 			upcomingExercises.push({
-				clazzes: `tracking-wider text-opacity-${80 - upcomingExercises.length * 10} text-blue-700`,
-				name: workout.exercises[currentIndex + 5].exercise.name,
+				clazzes: `tracking-wider text-blue-700`,
+				name: workout.exercises[currentIndex + 1].exercise.name,
 			});
 		}
 		upcomingExercises = upcomingExercises;
@@ -99,18 +101,16 @@
 		workout.status = WorkoutStatus.InProgress;
 		speakExercise('Get ready');
 
-		// initially populate upcoming exercises
-		while (upcomingExercises.length < 5) {
-			upcomingExercises.push({
-				clazzes: `tracking-wider text-opacity-${80 - upcomingExercises.length * 10} text-blue-700`,
-				name: workout.exercises[upcomingExercises.length].exercise.name,
-			});
-		}
+		upcomingExercises.push({
+			clazzes: `tracking-wider text-blue-700`,
+			name: workout.exercises[0].exercise.name,
+		});
 		upcomingExercises = upcomingExercises;
 
 		await runExercises({ time: 10, exercise: { name: 'Get Ready...', details: { aerobic: false, bodyParts: [] } } });
 		for (let i = 0; i < workout.exercises.length; i++) {
-			buildupcomingExercises(i);
+			currentExerciseIndex = i;
+			buildupcomingExercises(currentExerciseIndex);
 			console.log(`running exercise ${i}: ${workout.exercises[i].exercise.name}`);
 			await runExercises(workout.exercises[i]);
 		}
@@ -150,16 +150,20 @@
 			</div>
 		</div>
 		<div class="flex flex-col justify-center items-center">
-			{#each upcomingExercises as trailingExercise, index}
-				<div
-					class:text-3xl={index === 0}
-					class:text-xl={index === 1}
-					class:text-lg={index === 2}
-					class:text-md={index === 3}
-					class:text-sm={index === 4}
-					class={trailingExercise.clazzes}
-				>
-					{trailingExercise.name}
+			<div class="text-3xl text-gray-500 text-opacity-50">Up Next</div>
+			<div class="text-3xl text-blue-700">
+				{upcomingExercises[0].name}
+			</div>
+		</div>
+		<div class="w-full px-2 py-1 flex justify-between">
+			{#each workout.exercises as exer, index}
+				<div class="flex-1 flex justify-center items-center" style="padding:1px;">
+					<div
+						class="flex-1 w-full"
+						style="height:20px;"
+						class:bg-green-400={currentExerciseIndex > index}
+						class:bg-gray-400={currentExerciseIndex <= index}
+					/>
 				</div>
 			{/each}
 		</div>

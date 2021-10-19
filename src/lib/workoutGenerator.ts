@@ -1,6 +1,7 @@
 import { rando } from './rando';
 import exercises from './exercises';
 import type { Exercise, Workout, WorkoutExercise, WorkoutGeneratorOptions } from 'src/global';
+import BodyParts from './bodyParts';
 
 export const WorkoutStatus = {
 	NotStarted: 'NOT_STARTED',
@@ -22,15 +23,17 @@ interface ValidateExerciseParams {
 	circuit: WorkoutExercise[];
 	equipment: string[];
 	exercise: Exercise;
+	settings: WorkoutGeneratorOptions;
 }
 function invalidExercise(params: ValidateExerciseParams) {
 	const alreadyisInCircuit = circuitIncludesExercise(params.circuit, params.exercise);
 	const hasNecessaryEquipment = checkEquipment(params.equipment, params.exercise);
+	const tooManyBackExercises = checkForTooManyBackExercises(params.circuit, params.exercise, params.settings);
 	console.log(`validating ${params.exercise.name}: in circuit? ${alreadyisInCircuit}, has equipment? ${hasNecessaryEquipment}`);
-	return alreadyisInCircuit || !hasNecessaryEquipment;
+	return alreadyisInCircuit || !hasNecessaryEquipment || tooManyBackExercises;
 }
 
-function circuitIncludesExercise(circuit, exercise): boolean {
+function circuitIncludesExercise(circuit: WorkoutExercise[], exercise: Exercise): boolean {
 	return (
 		circuit.findIndex((e) => {
 			return e.exercise.name === exercise.name;
@@ -53,46 +56,55 @@ function checkEquipment(equipment: string[], exercise: Exercise): boolean {
 	}
 }
 
-export default async function ({
-	equipment,
-	numberOfCircuits,
-	numberOfExercisesInCircuit,
-	exerciseLength,
-	restLength,
-}: WorkoutGeneratorOptions): Promise<Workout> {
-	const restTime = restLength * (numberOfCircuits - 1),
-		workTime = numberOfCircuits * numberOfExercisesInCircuit * exerciseLength;
+function checkForTooManyBackExercises(circuit: WorkoutExercise[], exercise: Exercise, settings: WorkoutGeneratorOptions): boolean {
+	let count = 0;
+	circuit.forEach((e) => {
+		if (e.exercise.details.bodyParts.includes(BodyParts.Back)) count++;
+	});
+
+	if (settings.numberOfExercisesInCircuit <= 4) {
+		return count > 2;
+	} else if (settings.numberOfExercisesInCircuit <= 6) {
+		return count > 3;
+	} else {
+		return count / settings.numberOfExercisesInCircuit > 0.6;
+	}
+}
+
+export default async function (settings: WorkoutGeneratorOptions): Promise<Workout> {
+	const restTime = settings.restLength * (settings.numberOfCircuits - 1),
+		workTime = settings.numberOfCircuits * settings.numberOfExercisesInCircuit * settings.exerciseLength;
 	const workout: Workout = {
 		status: WorkoutStatus.NotStarted,
 		time: workTime + restTime,
 		exercises: [],
 	};
 
-	for (let currentCircuitNumber = 1; currentCircuitNumber <= numberOfCircuits; currentCircuitNumber++) {
+	for (let currentCircuitNumber = 1; currentCircuitNumber <= settings.numberOfCircuits; currentCircuitNumber++) {
 		const circuitExercises: WorkoutExercise[] = [];
-		while (circuitExercises.length < numberOfExercisesInCircuit) {
+		while (circuitExercises.length < settings.numberOfExercisesInCircuit) {
 			let exer = getRandomExercise();
-			while (invalidExercise({ circuit: circuitExercises, exercise: exer, equipment })) {
+			while (invalidExercise({ circuit: circuitExercises, exercise: exer, equipment: settings.equipment, settings })) {
 				exer = getRandomExercise();
 			}
 			circuitExercises.push({
-				time: exerciseLength,
+				time: settings.exerciseLength,
 				exercise: exer,
 			});
 		}
 
-		if (currentCircuitNumber === numberOfCircuits) {
+		if (currentCircuitNumber === settings.numberOfCircuits) {
 			let exer = getRandomExercise();
-			while (invalidExercise({ circuit: circuitExercises, exercise: exer, equipment })) {
+			while (invalidExercise({ circuit: circuitExercises, exercise: exer, equipment: settings.equipment, settings })) {
 				exer = getRandomExercise();
 			}
 			circuitExercises.push({
-				time: exerciseLength,
+				time: settings.exerciseLength,
 				exercise: exer,
 			});
 		} else {
 			circuitExercises.push({
-				time: restLength,
+				time: settings.restLength,
 				exercise: { name: 'Rest' },
 			});
 		}

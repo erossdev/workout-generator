@@ -52,7 +52,6 @@ export interface WorkoutGeneratorOptions {
   equipment: string[];
 	numberOfCircuits: number;
 	numberOfExercisesInCircuit: number;
-	workoutLength: number;
 	exerciseLength: number;
 	restLength: number;
 }
