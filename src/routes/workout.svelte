@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/env';
-	import type { Workout, WorkoutExercise } from 'src/global';
+	import type { Workout, WorkoutExercise, WorkoutGeneratorOptions } from 'src/global';
 	import soundMaker from '$lib/soundMaker';
 	import { WorkoutStatus } from '$lib/workoutGenerator';
 	import { goto } from '$app/navigation';
@@ -15,6 +15,7 @@
 	let hasWakeLock = false;
 	let workout: FlattenedWorkout = null;
 	let generatedWorkout: Workout = null;
+	let settings: WorkoutGeneratorOptions;
 	let currentTick = 10,
 		currentExerciseName,
 		currentExerciseIndex = 0,
@@ -22,6 +23,7 @@
 
 	if (browser) {
 		const savedWorkout = localStorage.getItem('workout');
+		settings = JSON.parse(localStorage.getItem('settings'));
 		if (savedWorkout) {
 			generatedWorkout = JSON.parse(savedWorkout);
 			workout = {
@@ -146,23 +148,24 @@
 		<div class="flex-1 flex flex-col">
 			<div class="flex-1 flex flex-col items-center justify-center">
 				<div class="text-9xl text-center">{currentTick}</div>
-				<div class="text-4xl text-blue-700 text-center">{currentExerciseName}</div>
+				<div class="text-4xl text-blue-400 text-center">{currentExerciseName}</div>
 			</div>
 		</div>
-		<div class="flex flex-col justify-center items-center">
-			<div class="text-3xl text-gray-500 text-opacity-50">Up Next</div>
-			<div class="text-3xl text-blue-700">
+		<div class="flex flex-col justify-center items-center mb-2">
+			<div class="text-3xl text-gray-400 text-opacity-50">Up Next</div>
+			<div class="text-2xl text-blue-400">
 				{upcomingExercises[0].name}
 			</div>
 		</div>
-		<div class="w-full px-2 py-1 flex justify-between">
+		<div class="w-full flex justify-between">
 			{#each workout.exercises as exer, index}
 				<div class="flex-1 flex justify-center items-center" style="padding:1px;">
 					<div
 						class="flex-1 w-full"
-						style="height:20px;"
+						style="height:30px;"
 						class:bg-green-400={currentExerciseIndex > index}
-						class:bg-gray-400={currentExerciseIndex <= index}
+						class:bg-gray-700={currentExerciseIndex <= index && exer.exercise.name === 'Rest'}
+						class:bg-gray-600={currentExerciseIndex <= index && exer.exercise.name !== 'Rest'}
 					/>
 				</div>
 			{/each}
@@ -171,37 +174,11 @@
 	{#if workout.status === WorkoutStatus.Paused}
 		<div class="flex-1 flex flex-col items-center justify-center">
 			<div class="text-3xl text-center">Workout Paused</div>
-			<button class="mt-5 p-3 text-xl text-center border border-blue-700 hover:bg-blue-300 active:bg-blue-500" on:click={resumeWorkout}
-				>Click to Resume</button
-			>
+			<button class="mt-5 p-3 text-xl" on:click={resumeWorkout}>Click to Resume</button>
 		</div>
 	{/if}
 	{#if workout.status === WorkoutStatus.Complete}
 		<div class="text-5xl">YOU DID IT!</div>
-		<button class="border border-blue-700 p-3 text-blue-900 bg-blue-300 hover:bg-blue-500 active:bg-blue-600" on:click={completeWorkout}
-			>Go back home</button
-		>
+		<button on:click={completeWorkout}>Go back home</button>
 	{/if}
 {/if}
-
-<style>
-	.text-opacity-80 {
-		--tw-text-opacity: 0.8;
-	}
-
-	.text-opacity-70 {
-		--tw-text-opacity: 0.7;
-	}
-
-	.text-opacity-60 {
-		--tw-text-opacity: 0.6;
-	}
-
-	.text-opacity-50 {
-		--tw-text-opacity: 0.5;
-	}
-
-	.text-opacity-40 {
-		--tw-text-opacity: 0.4;
-	}
-</style>

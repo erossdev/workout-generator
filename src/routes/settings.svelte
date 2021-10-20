@@ -101,9 +101,6 @@
 		</div>
 	</div>
 	<div class="flex items-center justify-center">
-		<button
-			class="mt-5 border-blue-300 bg-gradient-to-br from-blue-300 to-blue-400 text-blue-900 font-semibold px-5 py-3 text-xl"
-			on:click={saveAndGenerateWorkout}>Generate Workout</button
-		>
+		<button class="mt-5 px-5 py-3" on:click={saveAndGenerateWorkout}>Generate Workout</button>
 	</div>
 </div>

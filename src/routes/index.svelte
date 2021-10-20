@@ -29,9 +29,7 @@
 </svelte:head>
 
 <div class="flex-1 flex justify-center items-center">
-	<button id="make-me-workout-button" class="flex items-center justify-center text-center" on:click={goToSettings}>
-		Make Me Workout
-	</button>
+	<button id="make-me-workout-button" class="flex items-center justify-center text-center" on:click={goToSettings}> Make Me Workout </button>
 </div>
 
 <style>
@@ -72,7 +70,6 @@
 	#make-me-workout-button {
 		width: 250px;
 		height: 250px;
-		@apply border rounded-full border-blue-500 bg-gradient-to-br from-blue-300 to-blue-500 text-blue-900 text-3xl font-semibold tracking-widest;
-		@apply active:from-blue-500 active:to-blue-700;
+		@apply rounded-full text-3xl font-semibold tracking-widest;
 	}
 </style>
